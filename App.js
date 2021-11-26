@@ -6,6 +6,9 @@ export default function App() {
   const [text, setText] = React.useState('');
   const [item, setItem] = React.useState([]);
 
+  const [editingKey, setEditingKey] = React.useState();
+  const [isEditing, setIsEditing] = React.useState(false);
+
   const addItem = () => {
     setItem([...item, {data: text, key: Math.random()}])
   }
@@ -13,6 +16,14 @@ export default function App() {
   const deleteItem = (key) => {
     setItem(item.filter(i => i.key != key));
     setText('')
+  }
+
+  const updateItem = () => {
+    setItem(item.map(i => {
+      return i.key == editingKey ? {data: text, key: editingKey}: i
+    }))
+    setText('');
+    setIsEditing(false);
   }
 
   return (
@@ -28,9 +39,9 @@ export default function App() {
         />
         <Pressable 
           style = {styles.pressable}
-          onPress = {addItem}
+          onPress = {isEditing ? updateItem : addItem}
         >
-          <Text style = {{color: '#fff'}}>Add</Text>
+          <Text style = {{color: '#fff'}}>{isEditing ? "Update": "Add"}</Text>
         </Pressable>
       </View>
       <FlatList 
@@ -40,6 +51,11 @@ export default function App() {
           <TouchableOpacity 
             key = {item.key}
             style = {styles.touchable}
+            onPress = {() => {
+              setText(item.data)
+              setIsEditing(true);
+              setEditingKey(item.key)
+            }}
           >
             <Text style = {{color: '#fff', fontSize: 25}}>{item.data}</Text>
             <TouchableOpacity 
