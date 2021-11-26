@@ -10,6 +10,11 @@ export default function App() {
     setItem([...item, {data: text, key: Math.random()}])
   }
 
+  const deleteItem = (key) => {
+    setItem(item.filter(i => i.key != key));
+    setText('')
+  }
+
   return (
     <View style={styles.container}>
       <Text>Todo App</Text>
@@ -36,7 +41,15 @@ export default function App() {
             key = {item.key}
             style = {styles.touchable}
           >
-            <Text>{item.data}</Text>
+            <Text style = {{color: '#fff', fontSize: 25}}>{item.data}</Text>
+            <TouchableOpacity 
+              style = {styles.touchable2}
+              onPress = {() => {
+                deleteItem(item.key)
+              }}
+            >
+              <Text style = {styles.text}>X</Text>
+            </TouchableOpacity>
           </TouchableOpacity>
         )}
       />
@@ -71,5 +84,17 @@ const styles = StyleSheet.create({
     width: '90%',
     flexDirection: 'row',
     justifyContent: 'space-between'
+  },
+  text: {
+    color: '#fff',
+    fontSize: 20
+  },
+  touchable2: {
+    width: 30,
+    height: 30,
+    borderRadius: 50,
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center'
   }
 });
