@@ -6,15 +6,30 @@ export default function App() {
   const [text, setText] = React.useState('');
   const [item, setItem] = React.useState([]);
 
+  const addItem = () => {
+    setItem([...item, {data: text, key: Math.random()}])
+  }
+
   return (
     <View style={styles.container}>
       <Text>Todo App</Text>
       <View style = {{flexDirection: 'row', marginTop: 10}}>
-        <TextInput style = {styles.input} placeholder = "Enter Product Name" placeholderTextColor = "green"/>
-        <Pressable style = {styles.pressable}><Text style = {{color: '#fff'}}>Add</Text></Pressable>
+        <TextInput 
+          style = {styles.input} 
+          placeholder = "Enter Product Name" 
+          placeholderTextColor = "green"
+          onChangeText = {setText}
+          value = {text}
+        />
+        <Pressable 
+          style = {styles.pressable}
+          onPress = {addItem}
+        >
+          <Text style = {{color: '#fff'}}>Add</Text>
+        </Pressable>
       </View>
       <FlatList 
-        data = {}
+        data = {item}
       />
       <StatusBar style="auto" />
     </View>
